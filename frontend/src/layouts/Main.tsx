@@ -1,0 +1,155 @@
+import Link from '@/components/Link';
+import LoadingSpinner from '@/components/LoadingSpinner';
+import Tag from '@/components/Tag';
+import siteMetadata from '@/data/siteMetadata';
+import apiService from '@/utils/ApiService';
+import FormatDate from '@/utils/formatDate';
+import { useEffect, useState } from 'react';
+
+const MAX_DISPLAY = 5;
+
+export default function Home({ posts }) {
+  const [loading, setLoading] = useState(false);
+
+  const handleRouteChangeStart = () => setLoading(true);
+  const handleRouteChangeComplete = () => setLoading(false);
+  const handleRouteChangeError = () => setLoading(false);
+
+  useEffect(() => {
+    window.addEventListener('routeChangeStart', handleRouteChangeStart);
+    window.addEventListener('routeChangeComplete', handleRouteChangeComplete);
+    window.addEventListener('routeChangeError', handleRouteChangeError);
+    return () => {
+      window.removeEventListener('routeChangeStart', handleRouteChangeStart);
+      window.removeEventListener('routeChangeComplete', handleRouteChangeComplete);
+      window.removeEventListener('routeChangeError', handleRouteChangeError);
+    };
+  }, []);
+
+  const [tagsObject, setTagsObject] = useState([]);
+
+  useEffect(() => {
+    // Function to fetch data from the API
+    async function fetchData() {
+      try {
+        setLoading(true);
+        const response = await apiService.get(`/api/posts/tags`);
+        setTagsObject(response.data);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    // Call the fetchData function
+    fetchData();
+  }, [tagsObject.values]);
+
+  const allTags = Object.keys(tagsObject);
+
+  return (
+    <>
+      {loading ? (
+        <LoadingSpinner />
+      ) : (
+        <>
+          <div className='flex items-center justify-between '>
+            <div className='space-y-4'>
+              <h1 className='text-3xl font-extrabold leading-9 tracking-tight text-gray-900 dark:text-gray-100 sm:text-4xl sm:leading-10 md:text-6xl md:leading-14'>
+                <span className='text-gray-500 dark:text-blue-400'>
+                  Save brain - Share & Save Your Insights
+                </span>
+              </h1>
+              <p className='text-indigo-600 text-xl'>
+                A personal knowledge hub for saving and sharing insights across diverse fields. Join
+                me in exploring and learning together!
+              </p>
+            </div>
+          </div>
+          <div className='divide-y divide-gray-200 dark:divide-gray-700'>
+            <div className='flex flex-row space-x-2'>
+              <div className='space-y-2 pb-6 pt-6 md:space-y-2'>
+                <h1 className='text-2xl font-extrabold leading-9 tracking-tight text-gray-900 dark:text-gray-100 sm:text-7xl sm:leading-10 md:text-5xl md:leading-14'>
+                  Recent
+                </h1>
+                <p className='text-lg leading-7 text-gray-500 dark:text-gray-400'>
+                  {siteMetadata.description}
+                </p>
+              </div>
+              <div className='pt-10 pl-5'>
+                {allTags.length === 0 && 'No tags found.'}
+                <div className='flex flex-wrap mb-3'>
+                  {allTags.map((tag) => (
+                    <Tag key={tag} text={tag} />
+                  ))}
+                </div>
+              </div>
+            </div>
+            <ul className='divide-y divide-gray-200 dark:divide-gray-700'>
+              {!posts.length && 'No posts found.'}
+              {posts.slice(0, MAX_DISPLAY).map((post) => {
+                const { id, createDate, title, summary, tags } = post;
+                return (
+                  <li key={id} className='py-12'>
+                    <Link href={`/blog/${id}`} className='text-gray-900 dark:text-gray-100'>
+                      <article className='hover:-translate-y-1 hover:scale-110 duration-300 ...'>
+                        <div className='space-y-2 xl:grid xl:grid-cols-4 xl:items-baseline xl:space-y-0 rounded-lg shadow-md hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700'>
+                          <dl>
+                            <dt className='sr-only'>Published on</dt>
+                            <dd className='text-base font-medium leading-6 text-gray-500 dark:text-gray-400 pl-5'>
+                              <time dateTime={createDate}>
+                                {FormatDate({ date: createDate, locale: 'en-US' })}
+                              </time>
+                            </dd>
+                          </dl>
+                          <div className='space-y-5 xl:col-span-3 p-3'>
+                            <div className='space-y-6'>
+                              <div>
+                                <h2 className='text-2xl font-bold leading-8 tracking-tight'>
+                                  {title}
+                                </h2>
+                                <div className='flex flex-wrap'>
+                                  {tags.map((tag) => (
+                                    <Tag key={tag} text={tag} />
+                                  ))}
+                                </div>
+                              </div>
+                              <div className='prose max-w-none text-gray-500 dark:text-gray-400'>
+                                {summary}
+                              </div>
+                            </div>
+                            <div className='text-base font-medium leading-6'>
+                              <Link
+                                href={`/blog/${id}`}
+                                className='text-primary-500 hover:text-primary-600 dark:hover:text-primary-400'
+                                aria-label={`Read "${title}"`}
+                              >
+                                Read more &rarr;
+                              </Link>
+                            </div>
+                          </div>
+                        </div>
+                      </article>
+                    </Link>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+          {posts.length > MAX_DISPLAY && (
+            <div className='flex justify-end text-base font-medium leading-6'>
+              <Link
+                href='/blog'
+                className='text-primary-500 hover:text-primary-600 dark:hover:text-primary-400'
+                aria-label='All posts'
+              >
+                All Posts &rarr;
+              </Link>
+            </div>
+          )}
+        </>
+      )}
+    </>
+  );
+}

@@ -1,39 +1,36 @@
-# Personal Blog UI
-
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Frabbyalone%2Fmyblog)
-
-[See my personal site](https://blog.rabbyhasan.com.bd/)
-
-This React template was originally created by timrix. In the original version, blogs were generated using MDX parsing. I have transformed this template to work seamlessly with the [.NET API](https://github.com/rabbyalone/PersonalBlogAPI).
-
-## Key Features
-
-- **Markdown Editor**: Add a markdown editor to facilitate post creation.
-- **Authorization**: Implement authorization to secure data storage in the API.
-- **Markdown JSON**: Retrieve Markdown content for posts from the API.
-- **New Markdown Renderer**: Enhance the Markdown rendering functionality.
-- **Loader**: Integrate a loader for improved user experience.
-- **API Services**: Develop services for interaction with the API.
+This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
 
-### Step 1: Deploy the API
+First, run the development server:
 
-To begin, you need to deploy the [.NET API](https://github.com/rabbyalone/PersonalBlogAPI).
+```bash
+npm run dev
+# or
+yarn dev
+# or
+pnpm dev
+# or
+bun dev
+```
 
-### Step 2: Setting Up the UI
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-#### Quick Start Guide
+You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-1. Modify default values in `data/siteMetadata.js` to customize your site.
-2. Update the `apiUrl` in `utils/ApiService.ts` to connect to your deployed API.
-3. Personalize the authors and default author information in `authors/default.md`.
-4. Customize navigation links by modifying `headerNavLinks.js`.
-5. Create and publish blog posts using 'localhost:3000/editor'.
-6. Deploy your UI to make it accessible to your audience.
+This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
-With these steps, you can personalize and deploy your Personal Blog UI, offering a user-friendly environment for creating and sharing your blog content.
+## Learn More
 
-## Markdown Editor
+To learn more about Next.js, take a look at the following resources:
 
-![Markdown Editor](https://raw.githubusercontent.com/rabbyalone/myblog/main/public/readme/post-editor.png)
+- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
+- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+
+You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+
+## Deploy on Vercel
+
+The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+
+Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
