@@ -10,7 +10,7 @@ const Header = () => {
   return (
     <header className='flex items-center justify-between py-10'>
       <div>
-        <Link href='/' aria-label={siteMetadata.headerTitle}>
+        <Link href='/home' aria-label={siteMetadata.headerTitle}>
           <div className='flex items-center justify-between gap-3 '>
             <Image className='rounded-md' src={Logo} alt='logo' width={36} height={36} />
             {typeof siteMetadata.headerTitle === 'string' ? (
@@ -29,7 +29,7 @@ const Header = () => {
             <Link
               key={link.title}
               href={link.href}
-              className='rounded-xl font-bold hover:bg-gray-100 dark:hover:bg-opacity-10 sm:p-4'
+              className='rounded-xl font-bold hover:bg-gray-100 dark:hover:text-black sm:p-4'
             >
               {link.title}
             </Link>

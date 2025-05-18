@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
-import './globals.css';
+// import './globals.css';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 
@@ -25,14 +25,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang='en' suppressHydrationWarning>
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <div className='flex h-screen flex-col justify-between font-sans'>
-          <Header />
-          <main className='mb-auto mt-20'>{children}</main>
-          <Footer />
-        </div>
-      </body>
-    </html>
+    <section className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+      <div className='flex h-screen flex-col justify-between font-sans'>
+        <Header />
+        <main className='mb-auto mt-20'>{children}</main>
+        <Footer />
+      </div>
+    </section>
   );
 }

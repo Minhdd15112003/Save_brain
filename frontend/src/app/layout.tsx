@@ -5,6 +5,7 @@ import { ThemeProviders } from '../components/theme-providers';
 import SectionContainer from '@/components/SectionContainer';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import { GoogleOAuthProvider } from '@react-oauth/google';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -31,11 +32,9 @@ export default function RootLayout({
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <ThemeProviders>
           <SectionContainer>
-            <div className='flex h-screen flex-col justify-between font-sans'>
-              <Header />
-              <main className='mb-auto mt-20'>{children}</main>
-              <Footer />
-            </div>
+            <GoogleOAuthProvider clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID!}>
+              <main className='mb-auto mt-5'>{children}</main>
+            </GoogleOAuthProvider>
           </SectionContainer>
         </ThemeProviders>
       </body>

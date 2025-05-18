@@ -1,5 +1,6 @@
 import Link from '@/components/Link';
 import LoadingSpinner from '@/components/LoadingSpinner';
+import { LoginDialog } from '@/components/login-dialog';
 import Tag from '@/components/Tag';
 import siteMetadata from '@/data/siteMetadata';
 import apiService from '@/utils/ApiService';

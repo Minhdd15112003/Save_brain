@@ -1,14 +1,16 @@
-'use client'
+'use client';
 
-import { useEffect } from 'react'
-import { useRouter } from 'next/navigation'
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import LoadingSpinner from '@/components/LoadingSpinner';
 
 export default function AuthCallback() {
-  const router = useRouter()
+  const router = useRouter();
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    router.push('/')
-  }, [router])
+    router.push('/home');
+  }, [router]);
 
-  return <div>Đang xử lý đăng nhập...</div>
+  return <LoadingSpinner />;
 }
