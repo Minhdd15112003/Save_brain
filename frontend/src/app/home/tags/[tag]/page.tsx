@@ -3,7 +3,7 @@
 import tagData from '@/data/tag-data.json';
 import { useState, useEffect } from 'react';
 import LoadingSpinner from '@/components/LoadingSpinner';
-import apiService from '@/utils/ApiService';
+import apiService from '@/app/api/ApiService';
 import ListLayout from '@/layouts/ListLayout';
 
 // export async function generateMetadata({ params }: { params: { tag: string } }): Promise<Metadata> {

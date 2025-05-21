@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import Main from '../../layouts/Main';
 import LoadingSpinner from '@/components/LoadingSpinner';
-import apiService from '@/utils/ApiService';
+import apiService from '@/app/api/ApiService';
 
 export default function Home() {
   const [posts, setPosts] = useState([]);

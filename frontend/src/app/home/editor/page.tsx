@@ -7,7 +7,7 @@ import MDEditor from '@uiw/react-md-editor';
 import 'react-tagsinput/react-tagsinput.css';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import toast, { Toaster } from 'react-hot-toast';
-import apiService, { setAuthToken } from '@/utils/ApiService';
+import apiService, { setAuthToken } from '@/app/api/ApiService';
 import { WithContext as ReactTags, KEYS } from 'react-tag-input';
 
 const MDXEditor = dynamic(() => import('@mdxeditor/editor').then((mod) => mod.MDXEditor), {

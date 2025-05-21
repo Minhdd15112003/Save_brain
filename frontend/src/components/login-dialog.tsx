@@ -10,9 +10,7 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
-import { useGoogleLogin } from '@react-oauth/google';
-import axios from 'axios';
-import { useRouter } from 'next/navigation';
+import useAuth from '@/hook/useAuth';
 
 interface dialogProps {
   stateDialog?: boolean;
@@ -21,26 +19,8 @@ interface dialogProps {
 
 export function LoginDialog({ stateDialog = false, showButton = false }: dialogProps) {
   const [open, setOpen] = useState(stateDialog);
-  const router = useRouter();
-  const handleGoogleLogin = useGoogleLogin({
-    onSuccess: async (codeResponse) => {
-      try {
-        const redirectUri = window.location.origin + '/auth/callback';
-        const response = await axios.post('http://localhost:8000/auth/google', {
-          code: codeResponse.code,
-          redirect_uri: redirectUri,
-        });
 
-        const { access_token } = response.data;
-        localStorage.setItem('token', access_token);
-        router.push('/dashboard');
-      } catch (error) {
-        console.error('Login failed:', error);
-      }
-    },
-    onError: (error) => console.error('Google Login Error:', error),
-    flow: 'auth-code',
-  });
+  const { handleGoogleLogin } = useAuth();
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>

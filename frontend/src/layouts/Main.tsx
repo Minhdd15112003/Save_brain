@@ -3,7 +3,7 @@ import LoadingSpinner from '@/components/LoadingSpinner';
 import { LoginDialog } from '@/components/login-dialog';
 import Tag from '@/components/Tag';
 import siteMetadata from '@/data/siteMetadata';
-import apiService from '@/utils/ApiService';
+import apiService from '@/app/api/ApiService';
 import FormatDate from '@/utils/formatDate';
 import { useEffect, useState } from 'react';
 

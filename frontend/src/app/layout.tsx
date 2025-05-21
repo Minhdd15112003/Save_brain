@@ -3,9 +3,8 @@ import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
 import { ThemeProviders } from '../components/theme-providers';
 import SectionContainer from '@/components/SectionContainer';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
 import { GoogleOAuthProvider } from '@react-oauth/google';
+import SWRProvider from '@/components/swr-provider';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -32,9 +31,11 @@ export default function RootLayout({
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <ThemeProviders>
           <SectionContainer>
-            <GoogleOAuthProvider clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID!}>
-              <main className='mb-auto mt-5'>{children}</main>
-            </GoogleOAuthProvider>
+            <SWRProvider>
+              <GoogleOAuthProvider clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID!}>
+                <main className='mb-auto mt-5'>{children}</main>
+              </GoogleOAuthProvider>
+            </SWRProvider>
           </SectionContainer>
         </ThemeProviders>
       </body>

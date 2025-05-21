@@ -8,7 +8,7 @@ import Link from '@/components/Link';
 import Tag from '@/components/Tag';
 import FormatDate from '@/utils/formatDate';
 import siteMetadata from '@/data/siteMetadata';
-import { Post } from '@/models/postmodel';
+import { Post } from '@/schemas/postmodel';
 
 interface PaginationProps {
   totalPages: number;
