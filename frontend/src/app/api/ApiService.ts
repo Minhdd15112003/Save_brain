@@ -1,6 +1,5 @@
-import Axios, { AxiosError } from 'axios';
+import Axios from 'axios';
 import { Constants } from '../../constants';
-import toast from 'react-hot-toast';
 
 const apiService = Axios.create({
   baseURL: Constants.BACKEND_URL, // Replace with your API base URL
@@ -33,23 +32,5 @@ apiService.interceptors.request.use(
     return Promise.reject(error);
   },
 );
-
-export const handeApiError = (error: AxiosError) => {
-  const message = error.response?.data || error.message || 'Something went wrong';
-  const status = error.response?.status;
-  console.log('API error:', error);
-  toast.error(message as any, {
-    duration: 3000,
-    position: 'top-right',
-  });
-  if (status === 401) {
-    // Handle unauthorized error
-    toast.error('Unauthorized access. Please log in again.', {
-      duration: 3000,
-      position: 'top-right',
-    });
-  }
-  throw error;
-};
 
 export default apiService;

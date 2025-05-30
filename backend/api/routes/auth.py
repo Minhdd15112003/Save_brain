@@ -1,20 +1,31 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import FastAPI, HTTPException, Depends, Request, status, APIRouter
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
+from pydantic import BaseModel
 from google.oauth2 import id_token
-from google_auth_oauthlib.flow import InstalledAppFlow
-from utils.load_env import *
-from api.schemas.authSchema import GoogleAuthRequest
 from google.auth.transport import requests
+from google_auth_oauthlib.flow import InstalledAppFlow
+import os
+from api.schemas.authSchema import GoogleAuthRequest
+from utils.load_env import *
+from datetime import datetime, timedelta
+import jwt
+from typing import Optional
+from fastapi.responses import JSONResponse
+
 authRouter = APIRouter(
     prefix="/auth",
     tags=["auth"],
     responses={404: {"description": "Not found"}},
 )
+
+
 @authRouter.post("/google")
 async def google_auth(auth_req: GoogleAuthRequest):
     try:
         flow = InstalledAppFlow.from_client_config(
             {
-                "web":{
+                "web": {
                     "client_id": GOOGLE_CLIENT_ID,
                     "client_secret": GOOGLE_CLIENT_SECRET,
                     "auth_uri": AUTH_URI,
@@ -23,28 +34,34 @@ async def google_auth(auth_req: GoogleAuthRequest):
             },
             scopes=["openid", "email", "profile"]
         )
-        flow.redirect_uri = auth_req.redirect_uri
 
         # Trao đổi code để lấy token
+        flow.redirect_uri = auth_req.redirect_uri
         flow.fetch_token(code=auth_req.code)
         credentials = flow.credentials
 
         # Xác minh id_token
-        id_info = id_token.verify_token(
+        id_info = id_token.verify_oauth2_token(
             credentials.id_token,
             requests.Request(),
             GOOGLE_CLIENT_ID
         )
+
+        payload = {
+            "id": id_info["sub"],
+            "email": id_info["email"],
+            "name": id_info.get("name"),
+            "picture": id_info.get("picture")
+        }
         # Tạo access_token đơn giản (trong thực tế nên dùng JWT)
-        access_token = f"token_{id_info['sub']}"
+        expires_in = credentials.expires_in
+        access_token = jwt.encode(payload, SECRET_KEY, algorithm="HS256")
         return {
             "access_token": access_token,
-            "user": {
-                "id": id_info["sub"],
-                "email": id_info["email"],
-                "name": id_info.get("name"),
-                "picture": id_info.get("picture")
-            }
+            "refresh_token": credentials.refresh_token,
+            "user": payload,
+            "expires_in": int((expires_in - datetime.utcnow()).total_seconds()),
+            "credentials": credentials,
         }
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
