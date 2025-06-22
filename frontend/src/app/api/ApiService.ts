@@ -1,6 +1,6 @@
 import Axios from 'axios';
 import { Constants } from '../../constants';
-
+import Cookies from 'js-cookie';
 const apiService = Axios.create({
   baseURL: Constants.BACKEND_URL, // Replace with your API base URL
   headers: {
@@ -11,17 +11,22 @@ const apiService = Axios.create({
   timeout: Constants.API_TIMEOUT,
 });
 
-export const setAuthToken = (token: string) => {
+export const getAuthToken = () => {
+  const accessToken = Cookies.get('access_token') || null;
+  return accessToken;
+};
+
+export const setAuthCookies = (name: string, token: string, expires: number) => {
   if (token) {
-    localStorage.setItem('access_token', token);
+    Cookies.set(name, token, { expires: expires || 7 });
   } else {
-    localStorage.removeItem('access_token');
+    Cookies.remove(name);
   }
 };
 
 apiService.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem('access_token');
+    const token = getAuthToken();
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }

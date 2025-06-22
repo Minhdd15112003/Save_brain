@@ -14,7 +14,7 @@ app = FastAPI(title="save_brain", description="Save sample data of conversationa
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:4000"],
+    allow_origins=["http://localhost:4000","https://accounts.google.com"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

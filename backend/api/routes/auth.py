@@ -37,7 +37,7 @@ async def google_auth(auth_req: GoogleAuthRequest):
 
         # Trao đổi code để lấy token
         flow.redirect_uri = auth_req.redirect_uri
-        flow.fetch_token(code=auth_req.code)
+        flow.fetch_token(code=auth_req.token)
         credentials = flow.credentials
 
         # Xác minh id_token
@@ -53,7 +53,7 @@ async def google_auth(auth_req: GoogleAuthRequest):
             "name": id_info.get("name"),
             "picture": id_info.get("picture")
         }
-        # Tạo access_token đơn giản (trong thực tế nên dùng JWT)
+
         expires_in = credentials.expires_in
         access_token = jwt.encode(payload, SECRET_KEY, algorithm="HS256")
         return {

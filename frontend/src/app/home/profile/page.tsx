@@ -16,6 +16,7 @@ export default function Page() {
       setOpenLogin(true);
     } else {
       console.log('Token:', token);
+      // Fetch user data using the token
     }
   }, [token]);
 

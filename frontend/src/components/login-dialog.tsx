@@ -1,5 +1,5 @@
 'use client';
-
+import { redirect } from 'next/navigation';
 import { JSX, useState } from 'react';
 import Link from 'next/link';
 import {
@@ -11,7 +11,6 @@ import {
 } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import useAuth from '@/hook/useAuth';
-import { useRouter } from 'next/navigation';
 
 interface dialogProps {
   stateDialog?: boolean;
@@ -20,10 +19,9 @@ interface dialogProps {
 
 export function LoginDialog({ stateDialog = false, showButton = false }: dialogProps) {
   const [open, setOpen] = useState(stateDialog);
-  const router = useRouter();
   const { handleGoogleLogin } = useAuth();
   if (!open) {
-    router.push('/home');
+    redirect('/home');
   }
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -39,7 +37,7 @@ export function LoginDialog({ stateDialog = false, showButton = false }: dialogP
         </DialogHeader>
         <div className='flex flex-col items-center justify-center space-y-4 py-4'>
           <Button
-            // onClick={handleGoogleLogin}
+            onClick={handleGoogleLogin}
             className='flex w-full items-center justify-center gap-2'
           >
             <svg
